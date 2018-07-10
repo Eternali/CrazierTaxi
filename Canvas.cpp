@@ -2,13 +2,18 @@
 
 Canvas::Canvas(unsigned int width, unsigned int height)
  : width(width), height(height) {
-     clear();
+    for (int i = 0; i < width; i++) {
+        bmp.push_back(std::vector<int>());
+        for (int j = 0; j < height; j++) {
+            bmp.at(i).push_back(0);
+        }
+    }
 }
 
 void Canvas::clear() {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            bmp.at(j).at(i) = 0;
+            bmp[j][i] = 0;
         }
     }
 }

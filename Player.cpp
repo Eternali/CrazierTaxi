@@ -6,7 +6,7 @@ Player::Player(Canvas *canvas, int pos) : _canvas(canvas), pos(pos) {
 }
 
 void Player::draw() {
-    _canvas->bmp.at(_canvas->height - 1).at(pos) = 1;
+    _canvas->bmp[pos][0] = 1;
 }
 
 void Player::move(Direction dir) {
