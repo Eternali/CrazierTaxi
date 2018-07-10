@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#include <StandardCplusplus.h>
 #include <vector>
 
 class Canvas {

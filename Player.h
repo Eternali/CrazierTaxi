@@ -1,5 +1,3 @@
-#include "Canvas.h"
-
 enum Direction {
     LEFT,
     RIGHT

@@ -1,18 +1,16 @@
-#include "Canvas.h"
+// class Car {
 
-class Car {
+// public:
+//     Car(Canvas *canvas, int x, int y, int vel);
 
-public:
-    Car(Canvas *canvas, int x, int y, int vel);
+//     void draw();
+//     void update();
 
-    void draw();
-    void update();
+//     int width = 1;
+//     int height = 1;
+//     int x, y, vel;
 
-    int width = 1;
-    int height = 1;
-    int x, y, vel;
+// private:
+//     Canvas *_canvas;
 
-private:
-    Canvas *_canvas;
-
-};
+// };

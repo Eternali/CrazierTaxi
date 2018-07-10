@@ -2,7 +2,7 @@
 
 Canvas::Canvas(unsigned int width, unsigned int height)
  : width(width), height(height) {
-    clear();
+     clear();
 }
 
 void Canvas::clear() {

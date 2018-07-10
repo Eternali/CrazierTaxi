@@ -1,6 +1,3 @@
-#include <vector>
-#include "Canvas.h"
-
 class Leds : public Canvas {
 
 public:
@@ -10,6 +7,6 @@ public:
     void render();
 
 private:
-    std::vector<std::vector<int>> pins = {};
+    std::vector<std::vector<int>> pins {  };
 
 };

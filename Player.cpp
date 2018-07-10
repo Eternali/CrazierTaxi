@@ -1,3 +1,4 @@
+#include "Canvas.h"
 #include "Player.h"
 
 Player::Player(Canvas *canvas, int pos) : _canvas(canvas), pos(pos) {
