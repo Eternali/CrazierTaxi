@@ -19,3 +19,4 @@ void Player::move(Direction dir) {
             break;
     }
 }
+
