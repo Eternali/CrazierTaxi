@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Leds.h"
 
-Leds::Leds(unsigned int width, unsigned int height) : Canvas(width, height) {
+Leds::Leds(unsigned int width, unsigned int height) : pins(pins) : Canvas(width, height) {
 
 }
 

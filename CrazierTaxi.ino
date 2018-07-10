@@ -1,7 +1,8 @@
 #include <LiquidCrystal.h>
 #include <LCDBitmap.h>
+#include <vector>
 
-#include "Canvas.h"
+#include "Leds.h"
 #include "Car.h"
 #include "Player.h"
 
@@ -9,8 +10,9 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 LCDBitmap bmp(&lcd, 0, 0);
 
-Player player(Pos.CENTER);
-Canvas canvas(3, 8);
+std::vector<std::vector<int>> pins = {{}};
+Leds canvas(3, 8, pins);
+Player player(canvas, 1);
 Car cars[10];
 
 void setup() {
