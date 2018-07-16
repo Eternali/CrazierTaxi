@@ -7,7 +7,7 @@ struct Vector2 {
 class Car {
 
 public:
-    Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel);
+    Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel, int updateInt);
 
     void draw();
     void update();
@@ -16,6 +16,8 @@ public:
     Vector2<int> vel;
     int width = 1;
     int height = 1;
+
+    int updateInt;
 
 private:
     Canvas *_canvas;

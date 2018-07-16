@@ -1,8 +1,8 @@
 #include "Canvas.h"
 #include "Car.h"
 
-Car::Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel)
- : _canvas(canvas), pos(pos), vel(vel) {
+Car::Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel, int updateInt)
+ : _canvas(canvas), pos(pos), vel(vel), updateInt(updateInt) {
 
 }
 
