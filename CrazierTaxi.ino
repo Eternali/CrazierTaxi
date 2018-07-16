@@ -73,6 +73,8 @@ void loop() {
     for (Car car : cars) car.draw();
     player.draw();
     canvas.render();
+
+    ms -= ms - frozenms;
 }
 
 void moveLeft() {
