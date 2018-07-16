@@ -14,7 +14,9 @@ void Car::draw() {
     }
 }
 
-void Car::update() {
+bool Car::update() {
     pos.x += vel.x;
     pos.y += vel.y;
+
+    return pos.y <= 0;
 }

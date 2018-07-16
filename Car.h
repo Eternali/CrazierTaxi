@@ -10,7 +10,7 @@ public:
     Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel, int updateInt);
 
     void draw();
-    void update();
+    bool update();
 
     Vector2<int> pos;
     Vector2<int> vel;

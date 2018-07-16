@@ -11,8 +11,6 @@ const int rightPin = 3;
 //const int rstPin = 2;
 
 volatile long int ms = 0;
-const int ms = 256;
-const int interval = ms * ;
 const int spawnInt = 1000;
 
 std::vector<std::vector<int>> pins {
@@ -36,7 +34,7 @@ void setup() {
     TCCR1B = 0x0;  // set WGM_2:0 = 000
     TCCR1B = 0x4;  // set Timer1 to clk/256
     TIMSK1 = 0x6;  // enable OCR interrupt bits
-    OCR1A = interval;  // set output compare value A
+    OCR1A = 256;  // set output compare value A
 
     Serial.begin(9600);
     canvas.begin();
@@ -51,11 +49,15 @@ void setup() {
  
 void loop() {
     if (ms % spawnInt == 0) {
-      cars.push_back(Car(&canvas, Vector2<int>{ 8, rand() % 3 }, Vector2<int>{ 0, -1 }, 1000));
+      cars.push_back(Car(&canvas, Vector2<int>{ rand() % 3, 8 }, Vector2<int>{ 0, -1 }, 750));
+      Serial.println("PUSHING");
     }
-    for (Car car : cars) {
-        if (ms % car.updateInt == 0) {
-            car.update();
+    for (int c = 0; c < cars.size(); c++) {
+        if (ms % cars[c].updateInt == 0) {
+            if (cars[c].update()) {
+              cars.erase(cars.begin() + c);
+              c--;
+            }
         }
     }
 
@@ -85,14 +87,7 @@ void reset() {
 }
 
 ISR (TIMER1_COMPA_vect) {
-    for (Car car : cars) {
-        if (interval % car.updateInt == 0) car.canMove = HIGH;
-    }
-    TCCR1A = 0x0;
-}
-
-ISR (TIMER1_COMPB_vect) {
-    cars.push_back(Car(&canvas, Vector2<int>{ 8, rand() % 3 }, Vector2<int>{ 0, -1 }, 1000));
+    ms += 1;
     TCCR1A = 0x0;
 }
 
