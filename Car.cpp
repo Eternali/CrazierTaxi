@@ -15,8 +15,10 @@ void Car::draw() {
 }
 
 bool Car::update() {
-    pos.x += vel.x;
-    pos.y += vel.y;
+    if (++counter % updateInt == 0) {
+      pos.x += vel.x;
+      pos.y += vel.y;
+    }
 
     return pos.y <= 0;
 }

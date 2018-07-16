@@ -18,6 +18,7 @@ public:
     int height = 1;
 
     int updateInt;
+    long int counter = 0;
 
 private:
     Canvas *_canvas;

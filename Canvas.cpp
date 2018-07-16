@@ -10,10 +10,10 @@ Canvas::Canvas(unsigned int width, unsigned int height)
     }
 }
 
-void Canvas::clear() {
+void Canvas::clear(int col) {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            bmp[i][j] = 0;
+            bmp[i][j] = col;
         }
     }
 }

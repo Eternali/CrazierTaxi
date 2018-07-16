@@ -8,7 +8,7 @@ public:
     Canvas(unsigned int width, unsigned int height);
 
     virtual void begin() = 0;
-    void clear();
+    void clear(int col);
     virtual void render() = 0;
 
     unsigned int width, height;

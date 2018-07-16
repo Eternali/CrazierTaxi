@@ -21,3 +21,23 @@ void Player::move(Direction dir) {
     }
 }
 
+void Player::win() {
+  
+}
+
+void Player::loose() {
+  Serial.print("Your time: ");
+  Serial.print((millis() - lastLost) / 8000);
+  Serial.println(" seconds");
+  lastLost = millis();
+
+  for (int i = 0; i < 5; i++) {
+    _canvas->clear(1);
+    _canvas->render();
+    delay(250 * 8);
+    _canvas->clear(0);
+    _canvas->render();
+    delay(250 * 8);
+  }
+}
+
