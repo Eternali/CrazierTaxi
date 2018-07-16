@@ -29,7 +29,7 @@ void Player::loose() {
   Serial.print("Your time: ");
   Serial.print((millis() - lastLost) / 8000);
   Serial.println(" seconds");
-  lastLost = millis();
+ 
 
   for (int i = 0; i < 5; i++) {
     _canvas->clear(1);
@@ -39,5 +39,6 @@ void Player::loose() {
     _canvas->render();
     delay(250 * 8);
   }
+  lastLost = millis();
 }
 
