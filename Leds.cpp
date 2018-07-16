@@ -22,8 +22,6 @@ void Leds::render() {
                 delay(1);
                 digitalWrite(pins[0][j], LOW);
                 digitalWrite(pins[1][i], HIGH);
-                Serial.print(i);
-                Serial.println(j);
             }
         }
     }

@@ -13,7 +13,7 @@ Canvas::Canvas(unsigned int width, unsigned int height)
 void Canvas::clear() {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            bmp[j][i] = 0;
+            bmp[i][j] = 0;
         }
     }
 }
