@@ -5,7 +5,7 @@ Canvas::Canvas(unsigned int width, unsigned int height)
     for (int i = 0; i < width; i++) {
         bmp.push_back(std::vector<int>());
         for (int j = 0; j < height; j++) {
-            bmp.at(i).push_back(0);
+            bmp[i].push_back(0);
         }
     }
 }

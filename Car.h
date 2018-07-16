@@ -1,16 +1,23 @@
-// class Car {
+template <typename T>
+struct Vector2 {
+    T x;
+    T y;
+};
 
-// public:
-//     Car(Canvas *canvas, int x, int y, int vel);
+class Car {
 
-//     void draw();
-//     void update();
+public:
+    Car(Canvas *canvas, Vector2<int> pos, Vector2<int> vel);
 
-//     int width = 1;
-//     int height = 1;
-//     int x, y, vel;
+    void draw();
+    void update();
 
-// private:
-//     Canvas *_canvas;
+    Vector2<int> pos;
+    Vector2<int> vel;
+    int width = 1;
+    int height = 1;
 
-// };
+private:
+    Canvas *_canvas;
+
+};
