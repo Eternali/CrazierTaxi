@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Shared.h"
 #include "Canvas.h"
 #include "Leds.h"
 #include "Car.h"
@@ -10,12 +11,13 @@ const int leftPin = 3;
 const int rightPin = 2;
 //const int rstPin = 2;
 
+volatile long int ms = 0;
 volatile long int lastPressed = 0;
 volatile long int spawn = 0;
 volatile long int canMove = 0;
 
-volatile long int frozenms = 0;
-const int spawnInt = 2;
+// volatile long int frozenms = 0;
+const int spawnInt = 3;
 const int tolerance = 0;
 
 int highScore = 0;
@@ -40,28 +42,33 @@ void setup() {
   TCCR1A = 0x0;  // reset Timer1 control registers
   TCCR1B = 0x0;  // set WGM_2:0 = 000
   TCCR1B = 0x3;  // set Timer1 to clk/64
-  TCCR0B = 0x2;  // set Timer0 to clk/8
   TIMSK1 = 0x6;  // enable OCR interrupt bits
   OCR1A = 62500;  // set output compare value A to 1/4 second (1 second = 62500)
   OCR1B = 1024;  // set output compare value B
+
+  TCCR0B = 0x2;  // set Timer0 to clk/8
+
+  TCCR2A = 0x0;  // reset Timer1 control registers
+  TCCR2B = 0x3;  // set Timer1 to clk/64
+  TIMSK2 = 0x6;  // enable OCR interrupt bits
+  OCR2A = 256;  // set output compare value A 1 millisecond
+  OCR2B = 256;  // set output compare value B
+
 
   Serial.begin(9600);
   canvas.begin();
 
   //    attachInterrupt(digitalPinToInterrupt(leftPin), moveLeft, RISING);
   //    attachInterrupt(digitalPinToInterrupt(rightPin), moveRight, RISING);
-      attachInterrupt(0, moveRight, RISING);  // digital input pin 2 is mapped to interrupt 0
+  attachInterrupt(0, moveRight, RISING);  // digital input pin 2 is mapped to interrupt 0
   attachInterrupt(1, moveLeft, RISING);  // digital input pin 3 is mapped to interrupt 0
 
   sei();
 }
 
 void loop() {
-//  frozenms = ms;
-  //    Serial.println(frozenms);
 
   if (spawn >= spawnInt) {
-//          Serial.println(frozenms);
     cars.push_back(Car(&canvas, Vector2<int> { rand() % 3, 8 }, Vector2<int> { 0, -1 }, rand() % 3 + 1));
     spawn = 0;
   }
@@ -84,23 +91,24 @@ void loop() {
   player.draw();
   canvas.render();
 
-  //    ms = frozenms;
 }
 
 void moveLeft() {
   cli();
-  if (millis() - lastPressed > 640) {
+  // only register button press if more than 80 ms have passed since the last one
+  if (ms - lastPressed > 80) {
     player.move(LEFT);
-    lastPressed = millis();
+    lastPressed = ms;
   }
   sei();
 }
 
 void moveRight() {
   cli();
-  if (millis() - lastPressed > 640) {
+  // only register button press if more than 80 ms have passed since the last one
+  if (ms - lastPressed > 80) {
     player.move(RIGHT);
-    lastPressed = millis();
+    lastPressed = ms;
   }
   sei();
 }
@@ -119,5 +127,16 @@ ISR (TIMER1_COMPA_vect) {
 }
 
 ISR (TIMER1_COMPB_vect) {
+}
+
+
+ISR (TIMER2_COMPA_vect) {
+  cli();
+  ms += 1;
+  TCCR2A = 0x0;
+  sei();
+}
+
+ISR (TIMER2_COMPB_vect) {
 }
 

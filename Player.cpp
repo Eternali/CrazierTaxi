@@ -1,3 +1,4 @@
+#include "Shared.h"
 #include "Canvas.h"
 #include "Car.h"
 #include "Player.h"
@@ -22,7 +23,7 @@ void Player::move(Direction dir) {
 }
 
 int Player::loose(int highScore) {
-  int score = (millis() - lastLost) / 8000;
+  int score = (ms - lastLost) / 1000;
   Serial.print("High score: ");
   Serial.print(highScore);
   Serial.println(" seconds");
@@ -41,7 +42,7 @@ int Player::loose(int highScore) {
     _canvas->render();
     delay(250 * 8);
   }
-  lastLost = millis();
+  lastLost = ms;
 
   Serial.println("");
   return score > highScore ? score : highScore;
