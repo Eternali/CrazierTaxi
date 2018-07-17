@@ -7,26 +7,24 @@
 #include "Car.h"
 #include "Player.h"
 
-const int leftPin = 3;
-const int rightPin = 2;
-//const int rstPin = 2;
+const int interruptPin = 2;
+volatile int btnVal = 0;
 
 volatile long int ms = 0;
 volatile long int lastPressed = 0;
 volatile long int spawn = 0;
 volatile long int canMove = 0;
+volatile int spawnInt = 3;
 
-// volatile long int frozenms = 0;
-const int spawnInt = 3;
 const int tolerance = 0;
 
 int highScore = 0;
 
 std::vector<std::vector<int>> pins {
-  { 4, 5, 6, 7, 8, 9, 10 },
+  { 3, 4, 5, 6, 7, 8, 9, 10 },
   { 11, 12, 13 },
 };
-Leds canvas(3, 7, pins);
+Leds canvas(3, 8, pins);
 Player player(&canvas, 1);
 std::vector<Car> cars {};
 
@@ -35,10 +33,8 @@ void setup() {
 
   srand(time(NULL));
 
-      pinMode(leftPin, INPUT_PULLUP);
-  pinMode(rightPin, INPUT_PULLUP);
-  //    pinMode(rstPin, INPUT_PULLUP);
-
+  pinMode(interruptPin, INPUT_PULLUP);
+ 
   TCCR1A = 0x0;  // reset Timer1 control registers
   TCCR1B = 0x0;  // set WGM_2:0 = 000
   TCCR1B = 0x3;  // set Timer1 to clk/64
@@ -58,11 +54,8 @@ void setup() {
   Serial.begin(9600);
   canvas.begin();
 
-  //    attachInterrupt(digitalPinToInterrupt(leftPin), moveLeft, RISING);
-  //    attachInterrupt(digitalPinToInterrupt(rightPin), moveRight, RISING);
-  attachInterrupt(0, moveRight, RISING);  // digital input pin 2 is mapped to interrupt 0
-  attachInterrupt(1, moveLeft, RISING);  // digital input pin 3 is mapped to interrupt 0
-
+  attachInterrupt(0, btnInterrupt, RISING);  // digital input pin 2 is mapped to interrupt 0
+  
   sei();
 }
 
@@ -93,6 +86,33 @@ void loop() {
 
 }
 
+void reset() {
+  cars.clear();
+  highScore = player.loose(highScore);
+}
+
+void btnInterrupt() {
+  cli();
+  btnVal = analogRead(A0);
+  
+  if (ms - lastPressed > 100) {
+    if (btnVal >= 1015 && btnVal <= 1023) {  // left button
+      player.move(LEFT);
+    } else if (btnVal >= 980 && btnVal <= 990) {  // right button
+      player.move(RIGHT);
+    } else if (btnVal >= 926 && btnVal <= 936) {  // difficulty decrease button
+      spawnInt++;
+    } else if (btnVal >= 855 && btnVal <= 865) {  // difficulty increase button
+      if (spawnInt > 1) spawnInt--;
+    } else if (btnVal >= 700 && btnVal <= 716) {  // reset button
+      reset();
+    }
+    lastPressed = ms;
+  }
+
+  sei();
+}
+
 void moveLeft() {
   cli();
   // only register button press if more than 80 ms have passed since the last one
@@ -111,11 +131,6 @@ void moveRight() {
     lastPressed = ms;
   }
   sei();
-}
-
-void reset() {
-  cars.clear();
-  highScore = player.loose(highScore);
 }
 
 ISR (TIMER1_COMPA_vect) {
