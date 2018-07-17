@@ -12,6 +12,7 @@ void Player::draw() {
 }
 
 void Player::move(Direction dir) {
+//    Serial.println("MOVING");
     switch (dir) {
         case LEFT:
             if (pos > 0) pos--;

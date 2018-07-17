@@ -15,6 +15,7 @@ volatile long int lastPressed = 0;
 volatile long int spawn = 0;
 volatile long int canMove = 0;
 volatile int spawnInt = 3;
+volatile int printLevel = 0;
 
 const int tolerance = 0;
 
@@ -61,12 +62,18 @@ void setup() {
 
 void loop() {
 
+  if (printLevel) {
+    Serial.print("Spawn speed: ");
+    Serial.println(spawnInt);
+    printLevel = 0;
+  }
+
   if (spawn >= spawnInt) {
     cars.push_back(Car(&canvas, Vector2<int> { rand() % 3, 8 }, Vector2<int> { 0, -1 }, rand() % 3 + 1));
     spawn = 0;
   }
   if (canMove) {
-  for (int c = 0; c < cars.size(); c++) {
+    for (int c = 0; c < cars.size(); c++) {
       if (cars[c].update()) {
         if (cars[c].pos.x == player.pos) {
           reset();
@@ -102,34 +109,18 @@ void btnInterrupt() {
       player.move(RIGHT);
     } else if (btnVal >= 926 && btnVal <= 936) {  // difficulty decrease button
       spawnInt++;
+      printLevel = 1;
     } else if (btnVal >= 855 && btnVal <= 865) {  // difficulty increase button
-      if (spawnInt > 1) spawnInt--;
+      if (spawnInt > 1) {
+        spawnInt--;
+        printLevel = 1;
+      }
     } else if (btnVal >= 700 && btnVal <= 716) {  // reset button
       reset();
     }
     lastPressed = ms;
   }
 
-  sei();
-}
-
-void moveLeft() {
-  cli();
-  // only register button press if more than 80 ms have passed since the last one
-  if (ms - lastPressed > 80) {
-    player.move(LEFT);
-    lastPressed = ms;
-  }
-  sei();
-}
-
-void moveRight() {
-  cli();
-  // only register button press if more than 80 ms have passed since the last one
-  if (ms - lastPressed > 80) {
-    player.move(RIGHT);
-    lastPressed = ms;
-  }
   sei();
 }
 
