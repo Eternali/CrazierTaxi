@@ -68,6 +68,7 @@ void loop() {
     printLevel = 0;
   }
 
+//  Serial.println(spawn);
   if (spawn >= spawnInt) {
     cars.push_back(Car(&canvas, Vector2<int> { rand() % 3, 8 }, Vector2<int> { 0, -1 }, rand() % 3 + 1));
     spawn = 0;
@@ -102,7 +103,7 @@ void btnInterrupt() {
   cli();
   btnVal = analogRead(A0);
   
-  if (ms - lastPressed > 100) {
+  if (ms - lastPressed > 125) {
     if (btnVal >= 1015 && btnVal <= 1023) {  // left button
       player.move(LEFT);
     } else if (btnVal >= 980 && btnVal <= 990) {  // right button
@@ -118,8 +119,8 @@ void btnInterrupt() {
     } else if (btnVal >= 700 && btnVal <= 716) {  // reset button
       reset();
     }
-    lastPressed = ms;
   }
+  lastPressed = ms;
 
   sei();
 }
