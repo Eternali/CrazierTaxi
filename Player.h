@@ -10,8 +10,7 @@ public:
 
     void draw();
     void move(Direction dir);
-    void win();
-    void loose();
+    int loose(int highScore);
 
     int pos;
     long int lastLost = 0;

@@ -21,15 +21,17 @@ void Player::move(Direction dir) {
     }
 }
 
-void Player::win() {
-  
-}
-
-void Player::loose() {
-  Serial.print("Your time: ");
-  Serial.print((millis() - lastLost) / 8000);
+int Player::loose(int highScore) {
+  int score = (millis() - lastLost) / 8000;
+  Serial.print("High score: ");
+  Serial.print(highScore);
   Serial.println(" seconds");
- 
+  Serial.print("Your time: ");
+  Serial.print(score);
+  Serial.println(" seconds");
+  if (score > highScore) {
+    Serial.println("Congratulations! You have beaten the old highscore!");
+  }
 
   for (int i = 0; i < 5; i++) {
     _canvas->clear(1);
@@ -40,5 +42,8 @@ void Player::loose() {
     delay(250 * 8);
   }
   lastLost = millis();
+
+  Serial.println("");
+  return score > highScore ? score : highScore;
 }
 

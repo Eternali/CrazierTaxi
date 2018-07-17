@@ -15,8 +15,10 @@ volatile long int spawn = 0;
 volatile long int canMove = 0;
 
 volatile long int frozenms = 0;
-const int spawnInt = 1;
+const int spawnInt = 2;
 const int tolerance = 0;
+
+int highScore = 0;
 
 std::vector<std::vector<int>> pins {
   { 4, 5, 6, 7, 8, 9, 10 },
@@ -38,7 +40,7 @@ void setup() {
   TCCR1A = 0x0;  // reset Timer1 control registers
   TCCR1B = 0x0;  // set WGM_2:0 = 000
   TCCR1B = 0x3;  // set Timer1 to clk/64
-  TCCR0B = 0x2;  // set Timer0 to clk/16
+  TCCR0B = 0x2;  // set Timer0 to clk/8
   TIMSK1 = 0x6;  // enable OCR interrupt bits
   OCR1A = 62500;  // set output compare value A to 1/4 second (1 second = 62500)
   OCR1B = 1024;  // set output compare value B
@@ -58,7 +60,7 @@ void loop() {
 //  frozenms = ms;
   //    Serial.println(frozenms);
 
-  if (spawn >= 3) {
+  if (spawn >= spawnInt) {
 //          Serial.println(frozenms);
     cars.push_back(Car(&canvas, Vector2<int> { rand() % 3, 8 }, Vector2<int> { 0, -1 }, rand() % 3 + 1));
     spawn = 0;
@@ -67,7 +69,7 @@ void loop() {
   for (int c = 0; c < cars.size(); c++) {
       if (cars[c].update()) {
         if (cars[c].pos.x == player.pos) {
-          reset(false);
+          reset();
           break;
         }
         cars.erase(cars.begin() + c);
@@ -103,10 +105,9 @@ void moveRight() {
   sei();
 }
 
-void reset(bool hasWon) {
+void reset() {
   cars.clear();
-  if (hasWon) player.win();
-  else player.loose();
+  highScore = player.loose(highScore);
 }
 
 ISR (TIMER1_COMPA_vect) {
