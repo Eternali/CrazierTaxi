@@ -40,10 +40,10 @@ void setup() {
   TCCR1B = 0x0;  // set WGM_2:0 = 000
   TCCR1B = 0x3;  // set Timer1 to clk/64
   TIMSK1 = 0x6;  // enable OCR interrupt bits
-  OCR1A = 62500;  // set output compare value A to 1/4 second (1 second = 62500)
+  OCR1A = 62500;  // set output compare value A to 1/4 second
   OCR1B = 1024;  // set output compare value B
 
-  TCCR0B = 0x2;  // set Timer0 to clk/8
+  TCCR0B = 0x2;  // set Timer0 to clk/8 to increase speed of delay (and thus the entire render loop)
 
   TCCR2A = 0x0;  // reset Timer1 control registers
   TCCR2B = 0x3;  // set Timer1 to clk/64
@@ -103,7 +103,7 @@ void btnInterrupt() {
   cli();
   btnVal = analogRead(A0);
   
-  if (ms - lastPressed > 125) {
+  if (ms - lastPressed > 120) {
     if (btnVal >= 1015 && btnVal <= 1023) {  // left button
       player.move(LEFT);
     } else if (btnVal >= 980 && btnVal <= 990) {  // right button
